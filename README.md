@@ -8,13 +8,15 @@ The following **required** functionality is completed:
 
 - [x] User can make a fix request
 - [x] User can take pictures within the app or upload a photo
-- [ ] User gets notification when issue is fixed
-- [ ] App sends notification or email to responsible organization
-- [ ] Organization can post status of fix (in progress, completed, planned...)
-- [ ] Two different types of user (normalUser, organizationUser)
+- [x] Admin can post status of fix (in progress, completed, planned...)
+- [x] Two different types of user (user, admin)
+- [x] Homescreen shows requests in your organization
+- [x] Profilescreen shows requests made by you
 
 The following **optional** features are implemented:
 
+- [ ] User gets notification when issue is fixed
+- [ ] App sends notification or email to responsible organization
 - [ ] User can view a map with reported issues, and add report location of their issue
 - [ ] Fix process details (estimated time to completion, etc.)
 - [ ] Multiple themes
