@@ -11,21 +11,22 @@ import Parse
 
 class Request: NSObject {
     
-    let timestamp = NSDateFormatter.localizedStringFromDate(NSDate(), dateStyle: .MediumStyle, timeStyle: .ShortStyle)
-    
     class func submitRequest (image: UIImage?, withTitle title: String?, withDescription description: String?, withCategory category: String?, withTimestamp timestamp: String?, withCompletion completion: PFBooleanResultBlock?) {
         
         // Create parse object PFObject
         let request = PFObject(className: "Request")
+        let user = PFUser.currentUser()
         
         // Add relevant fields to the object
         request["media"] = getPFFileFromImage(image) // PFFile column type
-        request["author"] = PFUser.currentUser() // Pointer column type that points to PFUser
+        request["author"] = user
         request["title"] = title
         request["description"] = description
         request["category"] = category
         request["voteCount"] = 0
         request["timestamp"] = timestamp
+        request["organization"] = user!["organization"]
+        request["state"] = "New"
         
         // Save object (following function will save the object in Parse asynchronously)
         request.saveInBackgroundWithBlock(completion)

@@ -39,7 +39,7 @@ class SignInViewController: UIViewController {
                     self.presentViewController(vc, animated: true, completion: nil)
                 } else {
                     let storyboard = UIStoryboard(name: "Admin", bundle: nil)
-                    let vc = storyboard.instantiateViewControllerWithIdentifier("AdminViewController")
+                    let vc = storyboard.instantiateViewControllerWithIdentifier("AdminNavigationController")
                     self.presentViewController(vc, animated: true, completion: nil)
                 }
             } else {
@@ -47,17 +47,6 @@ class SignInViewController: UIViewController {
             }
         }
         
-        
     }
-    
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

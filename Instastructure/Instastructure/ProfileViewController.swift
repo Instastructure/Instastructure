@@ -13,6 +13,8 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
 
     @IBOutlet weak var tableView: UITableView!
     
+    var requests: [PFObject]?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -21,11 +23,12 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 320
-        tableView.reloadData()
         
         doQuery()
         
-        let refreshControl = UIRefreshControl
+        tableView.reloadData()
+        
+        let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: "refreshControlAction:", forControlEvents: UIControlEvents.ValueChanged)
         tableView.insertSubview(refreshControl, atIndex: 0)
     }
@@ -33,6 +36,11 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        doQuery()
+        tableView.reloadData()
     }
     
     func doQuery() {
@@ -53,25 +61,34 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
     }
     
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if let requests = requests {
+            return requests.count
+        } else {
+            return 0
+        }
+    }
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCellWithIdentifier("RequestCell", forIndexPath: indexPath) as! RequestCell
+        cell.request = requests![indexPath.row]
+        
+        return cell
+    }
+    
+    func refreshControlAction(refreshControl: UIRefreshControl) {
+        
+        doQuery()
+        
+        // Hide the RefreshControl
+        refreshControl.endRefreshing()
+    }
+    
     @IBAction func onLogout(sender: AnyObject) {
         PFUser.logOut()
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let vc = storyboard.instantiateViewControllerWithIdentifier("StarterNavigationController")
         self.presentViewController(vc, animated: true, completion: nil)
     }
-    
-    @IBAction func onSettings(sender: AnyObject) {
-        
-    }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

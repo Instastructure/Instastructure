@@ -22,9 +22,10 @@ class AdminViewController: UIViewController, UITableViewDataSource, UITableViewD
         tableView.dataSource = self
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 320
-        tableView.reloadData()
         
         doQuery()
+        
+        tableView.reloadData()
         
         // Initialize a UIRefreshControl
         let refreshControl = UIRefreshControl()
@@ -37,11 +38,16 @@ class AdminViewController: UIViewController, UITableViewDataSource, UITableViewD
         // Dispose of any resources that can be recreated.
     }
     
+    override func viewWillAppear(animated: Bool) {
+        doQuery()
+        tableView.reloadData()
+    }
+    
     func doQuery() {
         // construct PFQuery
         let query = PFQuery(className: "Request")
         query.orderByDescending("createdAt")
-        query.includeKey("author")
+        query.whereKey("organization", equalTo: PFUser.currentUser()!["organization"])
         query.limit = 20
         
         // fetch data asynchronously
@@ -78,14 +84,29 @@ class AdminViewController: UIViewController, UITableViewDataSource, UITableViewD
         refreshControl.endRefreshing()
     }
     
-    /*
-     // MARK: - Navigation
+    @IBAction func onLogout(sender: AnyObject) {
+        PFUser.logOut()
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let vc = storyboard.instantiateViewControllerWithIdentifier("StarterNavigationController")
+        self.presentViewController(vc, animated: true, completion: nil)
+    }
+    
+    @IBAction func unwindToVC(segue: UIStoryboardSegue) {
+        
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "adminDetailSegue" {
+            let cell = sender as! UITableViewCell
+            let indexPath = tableView.indexPathForCell(cell)
+            let request = requests![indexPath!.row]
+            
+            let adminDetailViewController = segue.destinationViewController as! AdminDetailViewController
+            adminDetailViewController.request = request
+            
+            print("Admin detail segue preparation called")
+        }
      
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-     // Get the new view controller using segue.destinationViewController.
-     // Pass the selected object to the new view controller.
-     }
-     */
+    }
     
 }

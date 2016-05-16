@@ -14,14 +14,41 @@ class RequestViewController: UIViewController, UIImagePickerControllerDelegate, 
     @IBOutlet weak var titleField: UITextField!
     @IBOutlet weak var descriptionTextView: UITextView!
     @IBOutlet weak var issueImageView: UIImageView!
+    @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var categoryField: IQDropDownTextField!
+    @IBOutlet weak var submitButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let cerulean = UIColor(netHex: 0x4484CE).CGColor
+        
+        // Title field
+        titleField.layer.borderWidth = 1
+        titleField.layer.borderColor = cerulean
+        titleField.layer.cornerRadius = 5
+        
+        // Category field
+        categoryField.layer.borderWidth = 1
+        categoryField.layer.borderColor = cerulean
+        categoryField.layer.cornerRadius = 5
+        
+        // Description
         descriptionTextView.layer.borderWidth = 1
+        descriptionTextView.layer.borderColor = cerulean
+        descriptionTextView.layer.cornerRadius = 5
+        
+        // Container
+        containerView.layer.cornerRadius = 5
+        containerView.layer.borderWidth = 1
+        containerView.layer.borderColor = cerulean
+        issueImageView.layer.cornerRadius = 5
+        
+        // Category field
         categoryField.itemList = ["Elevators and Escalators","Plumbing","Lighting", "Outlets","Streets and Sidewalks","Staff","HVAC","Cafeteria","Other"]
         categoryField.isOptionalDropDown = false
+        
+        submitButton.layer.cornerRadius = 5
 
     }
 
@@ -29,8 +56,6 @@ class RequestViewController: UIViewController, UIImagePickerControllerDelegate, 
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-    
     
     func imagePickerController(picker: UIImagePickerController,
         didFinishPickingMediaWithInfo info: [String : AnyObject]) {
@@ -68,15 +93,9 @@ class RequestViewController: UIViewController, UIImagePickerControllerDelegate, 
             self.tabBarController?.selectedIndex = 0
         }
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    
+    @IBAction func onBackgroundTap(sender: AnyObject) {
+        self.view.endEditing(true)
     }
-    */
-
+    
 }

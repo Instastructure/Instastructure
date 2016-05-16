@@ -23,15 +23,33 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             })
         )
         
+        // Force logout for debugging
+        // PFUser.logOut()
+        
         if PFUser.currentUser() != nil {
             // if there is a logged in user then load the home view controller
             print("There is a current user")
-            
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let vc = storyboard.instantiateViewControllerWithIdentifier("TabBarController")
+            let vc: UIViewController?
+            let user = PFUser.currentUser()
+            let admin = user!["admin"] as! Bool
+            if (admin != true) {
+                let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                vc = storyboard.instantiateViewControllerWithIdentifier("TabBarController")
+            } else {
+                let storyboard = UIStoryboard(name: "Admin", bundle: nil)
+                vc = storyboard.instantiateViewControllerWithIdentifier("AdminNavigationController")
+            }
             
             window?.rootViewController = vc
         }
+        
+        // TabBar color customization
+        let aluminumColor = UIColor(netHex: 0xD9D9D9)
+        let lightColor = UIColor(netHex: 0xf9cf00)
+        //let ceruleanColor = UIColor(netHex: 0x4484ce)
+        UITabBarItem.appearance().setTitleTextAttributes([NSForegroundColorAttributeName: aluminumColor], forState:.Normal)
+        UITabBarItem.appearance().setTitleTextAttributes([NSForegroundColorAttributeName: lightColor], forState:.Selected)
+        
         
         return true
     }

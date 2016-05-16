@@ -19,12 +19,17 @@ class RequestCell: UITableViewCell {
     @IBOutlet weak var upButton: UIButton!
     @IBOutlet weak var downButton: UIButton!
     
+    var voteCount: Int?
+    var voted = "neutral"
+    
     var request: PFObject! {
         didSet {
-            titleLabel.text = request["title"] as? String
+            titleLabel.text = "\(request["title"]!) [\(request["state"])]"
             descriptionLabel.text = request["description"] as? String
             timeLabel.text = request["timestamp"] as? String
-            voteCountLabel.text = /*request["voteCount"] as? String*/ "0"
+            
+            voteCount = request["voteCount"] as? Int
+            voteCountLabel.text = "\(voteCount!)"
         }
     }
     
@@ -38,5 +43,34 @@ class RequestCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
+    
+    @IBAction func onUpVote(sender: AnyObject) {
+        if voted == "neutral" {
+            voteCount! += 1
+            voted = "up"
+        } else if voted == "down" {
+            voteCount! += 1
+            voted = "neutral"
+        }
+        print("Upvoted")
+        voteCountLabel.text = "\(voteCount!)"
+        request["voteCount"] = voteCount
+        request.saveInBackground()
+    }
 
+    @IBAction func onDownVote(sender: AnyObject) {
+        if voted == "neutral" {
+            voteCount! -= 1
+            voted = "down"
+            
+        } else if voted == "up" {
+            voteCount! -= 1
+            voted = "neutral"
+        }
+        print("Downvoted")
+        voteCountLabel.text = "\(voteCount!)"
+        request["voteCount"] = voteCount
+        request.saveInBackground()
+    }
+    
 }
