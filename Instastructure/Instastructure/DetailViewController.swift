@@ -11,12 +11,38 @@ import Parse
 
 class DetailViewController: UIViewController {
     
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var stateLabel: UILabel!
+    @IBOutlet weak var authorLabel: UILabel!
+    @IBOutlet weak var descriptionLabel: UILabel!
+    @IBOutlet weak var timestampLabel: UILabel!
+    @IBOutlet weak var requestImageView: UIImageView!
+    @IBOutlet weak var notesLabel: UILabel!
+    
     var request: PFObject!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        
+        titleLabel.text = request["title"] as? String
+        stateLabel.text = request["state"] as? String
+        authorLabel.text = "Best Author Ever"
+        descriptionLabel.text = request["description"] as? String
+        timestampLabel.text = request["timestamp"] as? String
+        notesLabel.text = ""
+        
+        // Get image
+        let imageFile = request["media"] as! PFFile
+        imageFile.getDataInBackgroundWithBlock {
+            (imageData: NSData?, error: NSError?) -> Void in
+            if error == nil {
+                if let imageData = imageData {
+                    let image = UIImage(data:imageData)
+                    self.requestImageView.image = image
+                }
+            }
+        }
+        
     }
 
     override func didReceiveMemoryWarning() {

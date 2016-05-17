@@ -45,7 +45,7 @@ class RequestViewController: UIViewController, UIImagePickerControllerDelegate, 
         issueImageView.layer.cornerRadius = 5
         
         // Category field
-        categoryField.itemList = ["Elevators and Escalators","Plumbing","Lighting", "Outlets","Streets and Sidewalks","Staff","HVAC","Cafeteria","Other"]
+        categoryField.itemList = ["--Select Category--","Elevators and Escalators","Plumbing","Lighting", "Outlets","Streets and Sidewalks","Staff","HVAC","Cafeteria","Other"]
         categoryField.isOptionalDropDown = false
         
         submitButton.layer.cornerRadius = 5
@@ -90,6 +90,7 @@ class RequestViewController: UIViewController, UIImagePickerControllerDelegate, 
             self.titleField.text = nil
             self.descriptionTextView.text = nil
             self.issueImageView.image = nil
+            self.categoryField.selectedItem = self.categoryField.itemList[0]
             self.tabBarController?.selectedIndex = 0
         }
     }

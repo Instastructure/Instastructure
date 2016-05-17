@@ -91,4 +91,18 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         self.presentViewController(vc, animated: true, completion: nil)
     }
 
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "detailSegue2" {
+            let cell = sender as! UITableViewCell
+            let indexPath = tableView.indexPathForCell(cell)
+            let request = requests![indexPath!.row]
+            
+            let detailViewController = segue.destinationViewController as! DetailViewController
+            detailViewController.request = request
+            
+            print("Detail segue preparation called")
+        }
+        
+    }
+    
 }
